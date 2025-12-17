@@ -1,0 +1,56 @@
+classDiagram
+    note "Streamlit Script Architecture"
+
+    %% 1. 데이터 처리 유틸리티 (실제 함수들)
+    class DataUtils {
+        <<Helper Functions>>
+        +generate_dummy_scenario() : DataFrame, List
+        +latlon_to_meters(lat, lon, ref) : x, y
+        +meters_to_latlon(x, y, ref) : lat, lon
+        +calculate_dynamics(df) : speed, heading
+    }
+
+    %% 2. 세션 상태 (데이터 저장소)
+    class SessionState {
+        <<st.session_state>>
+        +os_data : DataFrame (자선 데이터)
+        +ts_data_list : List[DataFrame] (타선 데이터)
+        +waypoints : DataFrame (전문가 수정 경로점)
+        +ref_point : Tuple (기준 위경도)
+    }
+
+    %% 3. UI 구성 요소 (사이드바)
+    class SidebarUI {
+        <<Input Controls>>
+        +Mode Selection (Radio)
+        +File Uploader (OS/TS)
+        +Load Button
+    }
+
+    %% 4. 메인 화면 로직
+    class MainInterface {
+        <<Visual & Interaction>>
+        +3D Space-Time Cube (Plotly)
+        +Waypoint Select Box
+        +Position Sliders (Input)
+        +Apply Change Button
+        +Download Button (CSV)
+    }
+
+    %% 5. 외부 라이브러리
+    class Libraries {
+        <<Dependencies>>
+        Pandas
+        Numpy
+        Plotly Graph Objects
+        Scipy (Interpolate)
+    }
+
+    %% 관계 연결
+    SidebarUI --> SessionState : Data load & reset
+    DataUtils --> SessionState : Lat/Long conversing
+    SessionState --> MainInterface : Data visualization
+    MainInterface --> SessionState : Waypoint update
+    MainInterface --> DataUtils : Save & transition(Meters->LatLon)
+    Libraries ..> DataUtils : Utilized
+    Libraries ..> MainInterface : Graph redering
