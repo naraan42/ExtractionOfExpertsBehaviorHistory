@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 streamlit
 pandas
 numpy
@@ -6,4 +7,14 @@ scipy
 requests
 folium
 streamlit-folium
+=======
+streamlit
+pandas
+numpy
+plotly
+scipy
+requests
+folium
+streamlit-folium
+>>>>>>> e0cf47f25ba8d2f2e0fbf991b540944008788164
 openpyxl
